@@ -1,2 +1,5 @@
-class Category < ApplicationRecord
+class Category < ActiveHash::Base
+
+  include ActiveHash::Associations
+  has_many :items
 end
