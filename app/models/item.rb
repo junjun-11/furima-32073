@@ -6,9 +6,11 @@ class Item < ApplicationRecord
   belongs_to :prefecture
   belongs_to :day_to_ship
 
-  validates :item_name, presence: true
-  validates :explanation, presence: true
-
+  with_options presence: true do
+    validates :item_name
+    validates :explanation
+    validates :image
+  end
   with_options numericality: { other_than: 0, message: 'Select' } do
     validates :category_id
     validates :status_id
@@ -18,8 +20,6 @@ class Item < ApplicationRecord
   end
 
   validates :selling_price, presence: true, numericality: { message: 'Half-width number' }, inclusion: { in: (300..9_999_999), message: 'Out of setting range' }
-
-  validates :image, presence: true
 
   has_one_attached :image
   belongs_to :user

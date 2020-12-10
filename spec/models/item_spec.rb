@@ -33,8 +33,18 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include('Category Select')
       end
+      it 'カテゴリーの情報が選択されていないと保存できない' do
+        @item.category_id = 0
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Category Select')
+      end
       it '商品の状態についての情報が空だと保存できない' do
         @item.status_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Status Select')
+      end
+      it '商品の状態についての情報が選択されていないと保存できない' do
+        @item.status_id = 0
         @item.valid?
         expect(@item.errors.full_messages).to include('Status Select')
       end
@@ -43,8 +53,18 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include('Delivery fee Select')
       end
+      it '配送料の負担についての情報が選択されていないと保存できない' do
+        @item.delivery_fee_id = 0
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Delivery fee Select')
+      end
       it '発送元の地域についての情報が空だと保存できない' do
         @item.prefecture_id = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Prefecture Select')
+      end
+      it '発送元の地域についての情報が選択されていないと保存できない' do
+        @item.prefecture_id = 0
         @item.valid?
         expect(@item.errors.full_messages).to include('Prefecture Select')
       end
@@ -53,13 +73,23 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include('Day to ship Select')
       end
+      it '発送までの日数についての情報が選択されていないと保存できない' do
+        @item.day_to_ship_id = 0
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Day to ship Select')
+      end
       it '価格についての情報が空だと保存できない' do
         @item.selling_price = nil
         @item.valid?
         expect(@item.errors.full_messages).to include("Selling price can't be blank")
       end
-      it '価格の範囲が、¥300~¥9,999,999の間でないと保存できない' do
+      it '価格の範囲が、¥300~¥9,999,999の間でないと保存できない(下限)' do
         @item.selling_price = 299
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Selling price Out of setting range')
+      end
+      it '価格の範囲が、¥300~¥9,999,999の間でないと保存できない(上限)' do
+        @item.selling_price = 10_000_000
         @item.valid?
         expect(@item.errors.full_messages).to include('Selling price Out of setting range')
       end
