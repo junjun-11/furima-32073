@@ -1,9 +1,10 @@
 class UserPurchase
   
   include ActiveModel::Model
-  attr_accessor :postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number, :user_id, :item_id, :purchase_id, :token, :hoge
+  attr_accessor :postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number, :user_id, :item_id, :purchase_id, :token
   
   with_options presence: true do
+    validates :token
     validates :postal_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'Input correctly'}
     validates :prefecture_id, numericality: { other_than: 0, message: 'Select' }
     validates :municipality
