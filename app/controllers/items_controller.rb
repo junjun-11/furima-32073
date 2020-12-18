@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :move_to_index, only: [:edit, :update]
+  before_action :move_to_top_item_pachased_edit, only: [:edit, :update, :destory]
   def index
     @items = Item.all.order('created_at DESC')
   end
@@ -50,5 +51,9 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def move_to_top_item_pachased_edit
+    redirect_to :root if @item.purchase.present?
   end
 end

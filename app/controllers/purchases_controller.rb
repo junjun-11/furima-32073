@@ -1,18 +1,16 @@
 class PurchasesController < ApplicationController
+  before_action :authenticate_user!, only: [:index, :create]
   before_action :set_item_purchase, only: [:index, :create]
+  before_action :move_to_top_purchase, only: [:index, :create]
+  before_action :move_to_top_item_purchased, only: [:index, :create]
   def index
     @user_purchase = UserPurchase.new
-    # @item = Item.find(params[:item_id])
   end
 
   def create
-    # @item = Item.find(params[:item_id])
-    # binding.pry
     @user_purchase = UserPurchase.new(purchase_params)
-    # binding.pry
     if @user_purchase.valid?
-     pay_item
-      # binding.pry
+      pay_item
       @user_purchase.save
       redirect_to :root
     else
@@ -38,4 +36,12 @@ def pay_item
         card: purchase_params[:token],
         currency: 'jpy'
       )
+end
+
+def move_to_top_purchase
+  redirect_to :root if user_signed_in? && current_user.id == @item.user.id
+end
+
+def move_to_top_item_purchased
+  redirect_to :root if @item.purchase.present?
 end
