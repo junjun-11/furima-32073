@@ -39,7 +39,7 @@ def pay_item
 end
 
 def move_to_top_purchase
-  redirect_to :root if user_signed_in? && current_user.id == @item.user.id
+  redirect_to :root if current_user.id == @item.user.id
 end
 
 def move_to_top_item_purchased
